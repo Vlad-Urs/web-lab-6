@@ -1,0 +1,44 @@
+/* src/components/Card.css */
+.card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    margin: 10px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .card-value {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  
+  .card-growth {
+    font-size: 1rem;
+    color: #28a745;
+  }
+  
+  .growth-percentage {
+    color: #28a745;
+    font-weight: bold;
+  }
+  
