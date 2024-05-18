@@ -9,6 +9,23 @@
   transition: background-color 500ms ease-in-out;
 }
 
+.app-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: absolute;
+  top: 0;
+}
+
+.logo {
+  height: 50px;
+  position: absolute;
+  top: 1.5em;
+  color: var(--primary-text-color);
+}
+
 .title{
   color: var(--primary-text-color);
   margin-bottom: 50px;
