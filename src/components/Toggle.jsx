@@ -1,4 +1,5 @@
 import "./Toggle.css"
+import tg_icon from '../assets/toggle_icon.png'
 
 export const Toggle = ({handleChange, isChecked}) => {
     return (
@@ -10,7 +11,7 @@ export const Toggle = ({handleChange, isChecked}) => {
               onChange={handleChange}
               checked={isChecked}
             />
-            <label htmlFor="check">Dark Mode</label>
+            <label htmlFor="check">🌗</label>
         </div>
     );
 };
