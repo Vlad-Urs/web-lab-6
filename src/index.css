@@ -8,6 +8,7 @@
 :root{
   --background-color: white;
   --foreground-color: blue;
+  --component-bg:white;
   --primary-text-color: black;
   --secondary-text-color: white;
   --toggle-bg: #f0eb9d;
@@ -16,9 +17,11 @@
 }
 
 [data-theme="dark"]{
-  --background-color:black;
+  --background-color:	#221743;
   --foreground-color: rgb(85, 85, 232);
-  --primary-text-color: white;
+  --components-bg1:#b3c96d;
+  --components-bg2:#c7de7d;
+  --primary-text-color: #b3c96d;
   --secondary-text-color:black;
   --toggle-bg: #283452;
   --toggle-fg: #00a6ff;

@@ -1,6 +1,6 @@
 /* src/components/Card.css */
 .card {
-    background-color: #ffffff;
+    background-color: var(--components-bg1);
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -34,11 +34,9 @@
   
   .card-growth {
     font-size: 1rem;
-    color: #28a745;
   }
   
   .growth-percentage {
-    color: #28a745;
     font-weight: bold;
   }
   

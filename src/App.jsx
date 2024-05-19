@@ -4,13 +4,15 @@ import { Toggle } from './components/Toggle';
 import useLocalStorage from 'use-local-storage';
 import bron from './assets/the_bronze.png'
 import Card from './components/MainCards';
+import Table from './components/Table';
 
 
 export const App = () => {
   const [isDark,setIsDark] = useLocalStorage("isDark",false);
   const [ppg, setPPG] = useLocalStorage('ppg', 16.2);
-      const [rpg, setRPG] = useLocalStorage('rpg', 11.8);
-      const [apg, setAPG] = useLocalStorage('apg', 8.5);
+  const [rpg, setRPG] = useLocalStorage('rpg', 11.8);
+  const [apg, setAPG] = useLocalStorage('apg', 8.5);
+  
   return (
     <div className="App" data-theme = {isDark ? "dark" : "light"}>
       
@@ -39,6 +41,9 @@ export const App = () => {
           growthPercentage="18.2%"
         />
       </div>
+      <Table title="table"/>
+
+      
     </div>
   );
 };
