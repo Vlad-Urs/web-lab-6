@@ -17,11 +17,11 @@
 }
 
 [data-theme="dark"]{
-  --background-color:	#221743;
-  --foreground-color: rgb(85, 85, 232);
-  --components-bg1:#b3c96d;
+  --background-color:	#1B262C;
+  --foreground-color: #0F4C75;
+  --components-bg1:#0F4C75;
   --components-bg2:#c7de7d;
-  --primary-text-color: #b3c96d;
+  --primary-text-color: white;
   --secondary-text-color:black;
   --toggle-bg: #283452;
   --toggle-fg: #00a6ff;
