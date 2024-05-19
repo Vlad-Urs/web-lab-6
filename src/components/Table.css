@@ -1,0 +1,39 @@
+
+.custom-table-container {
+    width: 80%;  /* Set the width to 80% of the screen */
+    margin: 20px auto;  /* Center the table and add some margin */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background-color: var(--component-bg);
+    color:(--primary-text-color);
+  }
+  
+  .custom-table {
+    background-color: var(--component-bg);
+    color:(--primary-text-color);
+  }
+  
+  .MuiTableCell-head {
+    background-color: var(--components-bg1);
+    color: var(--primary-text-color); /* Set text color for header */
+    font-weight: bold;
+  }
+  
+  .MuiTableCell-body {
+    background-color: var(--components-bg1);
+  }
+  
+  .MuiTableRow-root:hover {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .css-1yhpg23-MuiTableCell-root{
+    color: white; /* Set text color for body */
+    background-color: var(--components-bg2);
+  }
+
+  .css-1ndpvdd-MuiTableCell-root {
+    color: var(--primary-text-color);
+}
+  
