@@ -1,0 +1,195 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "description": "Match API",
+        "version": "1.0.0",
+        "title": "Swagger API for Matches",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "tags": [
+        {
+            "name": "Matches API",
+            "description": "API for managing basketball matches"
+        }
+    ],
+    "servers": [
+        {
+            "url": "/"
+        }
+    ],
+    "components": {
+        "schemas": {
+            "Match": {
+                "type": "object",
+                "properties": {
+                    "date": { "type": "string", "format": "date" },
+                    "points": { "type": "integer" },
+                    "rebounds": { "type": "integer" },
+                    "assists": { "type": "integer" },
+                    "blocks": { "type": "integer" }
+                },
+                "required": ["date", "points", "rebounds", "assists", "blocks"]
+            },
+            "Id": {
+                "type": "integer",
+                "properties": {
+                    "id": { "type": "integer" }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/api/matches": {
+            "post": {
+                "tags": ["Matches API"],
+                "summary": "Add a new match",
+                "requestBody": {
+                    "description": "New match",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Match"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED"
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Matches API"],
+                "summary": "Get a number of matches",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of matches to return",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                    
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Match"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            }
+        },
+        "/api/matches/{id}": {
+            "get": {
+                "tags": ["Matches API"],
+                "summary": "Get an existing match",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Match id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Match"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            },
+            "put": {
+                "tags": ["Matches API"],
+                "summary": "Update an existing match",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Match id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update match data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Match"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Matches API"],
+                "summary": "Delete an existing match",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Match id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "NOT FOUND"
+                    }
+                }
+            }
+        }
+    }
+}
