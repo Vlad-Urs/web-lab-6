@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import db from '../utils/db'; // Import the database instance
+import axios from 'axios';
 import './AddMatchForm.css'; // Import the CSS file
+
+
+const BASE_URL = 'http://127.0.0.1:5000/api/matches';
 
 export default function AddMatchForm() {
   const [date, setDate] = useState('');
@@ -16,8 +19,14 @@ export default function AddMatchForm() {
   }, []);
 
   async function fetchMatches() {
-    const allMatches = await db.matches.toArray();
-    setMatches(allMatches);
+    try {
+      const response = await axios.get(BASE_URL);
+      setMatches(response.data);
+      console.log(response.data)
+    } catch (error) {
+      console.error('Error fetching matches:', error);
+      setStatus('Failed to fetch matches.');
+    }
   }
 
   function validateForm() {
@@ -38,14 +47,15 @@ export default function AddMatchForm() {
     }
 
     try {
-      // Add the new match
-      const id = await db.matches.add({
+      const newMatch = {
         date,
         points: Number(points),
         rebounds: Number(rebounds),
         assists: Number(assists),
-        blocks: Number(blocks)
-      });
+        blocks: Number(blocks),
+      };
+
+      await axios.post(BASE_URL, newMatch);
 
       setStatus(`Match on ${date} successfully added.`);
       // Reset form fields
@@ -55,19 +65,18 @@ export default function AddMatchForm() {
       setAssists('');
       setBlocks('');
       fetchMatches(); // Refresh the matches list
-      updateAverages();
     } catch (error) {
-      
+      setStatus('Failed to add match.');
     }
   }
 
   async function deleteMatch(id) {
     try {
-      await db.matches.delete(id);
+      await axios.delete(`${BASE_URL}/${id}`);
       setStatus(`Match with id ${id} deleted.`);
       fetchMatches(); // Refresh the matches list
     } catch (error) {
-      setStatus(`Failed to delete match: ${error}`);
+      setStatus(`Failed to delete match: ${error.message}`);
     }
   }
 
