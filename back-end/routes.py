@@ -1,25 +1,42 @@
 # Import necessary modules
 from flask import request, jsonify
+from functools import wraps
 from models.database import db
 from models.match import Match
 from __main__ import app
 from datetime import datetime, timedelta
-from flask_jwt_extended import create_access_token, get_jwt_identity,jwt_required, get_jwt
+from flask_jwt_extended import create_access_token, get_jwt_identity,jwt_required, get_jwt, verify_jwt_in_request
 
 
 @app.route('/token', methods=['GET'])
 def get_token():
     if request.method == 'GET':
+        role = request.args.get("role", type=str)
         access_token = create_access_token(
-            identity="admin", 
+            identity="user", 
             expires_delta=timedelta(minutes=5),
-            additional_claims={'role': request.args.get("role", type=str)},
+            additional_claims={'role': role},
         )
         return jsonify({"jwt": access_token}), 200
+    
+
+def role_required(role):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            verify_jwt_in_request()
+            claims = get_jwt()
+            if 'role' in claims and claims['role'] == role:
+                return fn(*args, **kwargs)
+            else:
+                return jsonify({"msg": "Forbidden - You don't have access to this resource"}), 403
+        return wrapper
+    return decorator
 
 
 @app.route('/api/matches', methods=['GET'])
 @jwt_required()
+
 def get_matches():
     matches = Match.query.all()
     return jsonify([match.serialize() for match in matches]), 200
@@ -27,6 +44,7 @@ def get_matches():
 
 @app.route('/api/matches', methods=['POST'])
 @jwt_required()
+@role_required('admin')
 def create_match():
     try:
         # Get data from the request body
@@ -60,6 +78,7 @@ def get_match_by_id(match_id):
 
 @app.route('/api/matches/<int:match_id>', methods=['PUT'])
 @jwt_required()
+@role_required('admin')
 def update_match(match_id):
     try:
         # Find the Match by ID
@@ -84,6 +103,7 @@ def update_match(match_id):
 
 @app.route('/api/matches/<int:match_id>', methods=['DELETE'])
 @jwt_required()
+@role_required('admin')
 def delete_match(match_id):
     try:
         # Find the Match by ID
