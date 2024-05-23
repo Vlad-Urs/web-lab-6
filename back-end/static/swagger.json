@@ -39,9 +39,54 @@
                     "id": { "type": "integer" }
                 }
             }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
         }
     },
+    "security": [
+        {
+            "BearerAuth": []
+        }
+    ],
     "paths": {
+        "/token": {
+            "get": {
+                "summary": "Get access token",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Role for the token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns JWT token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "jwt": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/matches": {
             "post": {
                 "tags": ["Matches API"],
@@ -64,7 +109,12 @@
                     "404": {
                         "description": "NOT FOUND"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
             },
             "get": {
                 "tags": ["Matches API"],
@@ -80,7 +130,6 @@
                             "default": 10
                         }
                     }
-                    
                 ],
                 "responses": {
                     "200": {
@@ -99,7 +148,12 @@
                     "404": {
                         "description": "NOT FOUND"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
             }
         },
         "/api/matches/{id}": {
@@ -131,7 +185,12 @@
                     "404": {
                         "description": "NOT FOUND"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": ["Matches API"],
@@ -165,7 +224,12 @@
                     "404": {
                         "description": "NOT FOUND"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
             },
             "delete": {
                 "tags": ["Matches API"],
@@ -188,7 +252,12 @@
                     "404": {
                         "description": "NOT FOUND"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
             }
         }
     }
