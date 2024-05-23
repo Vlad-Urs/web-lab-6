@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AddMatchForm.css'; // Import the CSS file
 
-
 const BASE_URL = 'http://127.0.0.1:5000/api/matches';
+const TOKEN_URL = 'http://127.0.0.1:5000/token';
 
 export default function AddMatchForm() {
   const [date, setDate] = useState('');
@@ -13,18 +13,41 @@ export default function AddMatchForm() {
   const [blocks, setBlocks] = useState('');
   const [status, setStatus] = useState('');
   const [matches, setMatches] = useState([]);
+  const [role, setRole] = useState('guest');
+  const [token, setToken] = useState('');
 
   useEffect(() => {
-    fetchMatches();
-  }, []);
+    fetchToken(role);
+  }, [role]);
+
+  useEffect(() => {
+    if (token) {
+      fetchMatches();
+    }
+  }, [token]);
+
+  async function fetchToken(role) {
+    try {
+      const response = await axios.get(TOKEN_URL, {
+        params: { role },
+      });
+      setToken(response.data.jwt);
+    } catch (error) {
+      console.error('Error fetching token:', error);
+      console.error('Error response:', error.response);
+      setStatus('Failed to fetch token.');
+    }
+  }
 
   async function fetchMatches() {
     try {
-      const response = await axios.get(BASE_URL);
+      const response = await axios.get(BASE_URL, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setMatches(response.data);
-      console.log(response.data)
     } catch (error) {
       console.error('Error fetching matches:', error);
+      console.error('Error response:', error.response);
       setStatus('Failed to fetch matches.');
     }
   }
@@ -55,7 +78,9 @@ export default function AddMatchForm() {
         blocks: Number(blocks),
       };
 
-      await axios.post(BASE_URL, newMatch);
+      await axios.post(BASE_URL, newMatch, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setStatus(`Match on ${date} successfully added.`);
       // Reset form fields
@@ -72,7 +97,9 @@ export default function AddMatchForm() {
 
   async function deleteMatch(id) {
     try {
-      await axios.delete(`${BASE_URL}/${id}`);
+      await axios.delete(`${BASE_URL}/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setStatus(`Match with id ${id} deleted.`);
       fetchMatches(); // Refresh the matches list
     } catch (error) {
@@ -82,6 +109,13 @@ export default function AddMatchForm() {
 
   return (
     <div className="form-container">
+      <div className="role-switch">
+        <label>Role: </label>
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="admin">Admin</option>
+          <option value="guest">Guest</option>
+        </select>
+      </div>
       <h2 className="form-title">Add a New Match</h2>
       <p className="status-message">{status}</p>
       <div className="form-horizontal">
@@ -130,7 +164,9 @@ export default function AddMatchForm() {
           />
         </div>
       </div>
-      <button onClick={addMatch}>Add Match</button>
+      <button onClick={addMatch} disabled={role !== 'admin'}>
+        Add Match
+      </button>
       <h2 className="form-title">Matches</h2>
       <table className="matches-table">
         <thead>
@@ -152,7 +188,9 @@ export default function AddMatchForm() {
               <td>{match.assists}</td>
               <td>{match.blocks}</td>
               <td>
-                <button onClick={() => deleteMatch(match.id)}>Delete</button>
+                {role === 'admin' && (
+                  <button onClick={() => deleteMatch(match.id)}>Delete</button>
+                )}
               </td>
             </tr>
           ))}
